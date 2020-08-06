@@ -68,7 +68,7 @@ namespace Stroke
             {
                 if (e.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
-                    currentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y)), API.GetAncestorFlags.GA_ROOTOWNER);
+                    currentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y)), API.GetAncestorFlags.GA_ROOT);
                     stroking = true;
                     Cursor.Hide();
                     lastPoint = e.Location;
