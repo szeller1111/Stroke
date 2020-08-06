@@ -29,7 +29,7 @@ namespace Stroke.Configure
         }
 
         private readonly Draw draw;
-        private bool drawing = false;
+        private bool stroking = false;
         private bool stroked = false;
         private Point lastPoint = new Point(0, 0);
         private List<Point> drwaingPoints = new List<Point>();
@@ -40,7 +40,7 @@ namespace Stroke.Configure
             {
                 if (e.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
-                    drawing = true;
+                    stroking = true;
                     Cursor.Hide();
                     lastPoint = e.Location;
                     drwaingPoints.Add(e.Location);
@@ -48,7 +48,7 @@ namespace Stroke.Configure
                 }
                 else if (e.MouseButtonState == MouseHook.MouseButtonStates.Up)
                 {
-                    drawing = false;
+                    stroking = false;
                     Cursor.Show();
 
                     if (stroked)
@@ -79,7 +79,7 @@ namespace Stroke.Configure
                 }
             }
 
-            if (e.MouseButtonState == MouseHook.MouseButtonStates.Move && drawing)
+            if (e.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking)
             {
                 stroked = true;
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)

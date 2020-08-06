@@ -220,6 +220,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "配置";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Configure_FormClosing);
             this.Load += new System.EventHandler(this.Configure_Load);
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
