@@ -38,7 +38,6 @@ namespace Stroke
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
             this.TransparencyKey = Color.Black;
-            this.TopMost = true;
             this.ResumeLayout(false);
         }
 
@@ -55,7 +54,7 @@ namespace Stroke
 
         private void Stroke_Shown(object sender, EventArgs e)
         {
-            API.SetWindowPos(this.Handle, (IntPtr)(0), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOZORDER | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
+            API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
         }
 
         private void Stroke_FormClosing(object sender, FormClosingEventArgs e)
@@ -88,7 +87,7 @@ namespace Stroke
                     stroking = false;
                     Cursor.Show();
                     this.Refresh();
-                    API.SetWindowPos(this.Handle, (IntPtr)(0), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOZORDER | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
+                    API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
                     if (stroked)
                     {
                         Gesture gesture = new Gesture("", drwaingPoints);
@@ -228,7 +227,7 @@ namespace Stroke
                                     drwaingPoints.Clear();
                                     Cursor.Show();
                                     this.Refresh();
-                                    API.SetWindowPos(this.Handle, (IntPtr)(0), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOZORDER | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
+                                    API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
                                     API.SetForegroundWindow(currentWindow);
                                     var task = Task.Run(() =>
                                     {
@@ -249,8 +248,7 @@ namespace Stroke
                 stroked = true;
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)
                 {
-                    this.TopMost = true;
-                    API.SetWindowPos(this.Handle, (IntPtr)(0), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOZORDER | API.SWP.NOACTIVATE | API.SWP.SHOWWINDOW));
+                    API.SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.SHOWWINDOW));
                     draw.DrawPath(lastPoint, e.Location);
                 }
                 lastPoint = e.Location;
