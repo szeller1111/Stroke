@@ -47,7 +47,6 @@ namespace Stroke.Configure
             ToolStripMenuItemRemoveAction.Text = "删除 [动作]";
             ContextMenuStripAction.Items.Add(ToolStripMenuItemAddAction);
             ContextMenuStripAction.Items.Add(ToolStripMenuItemRemoveAction);
-            this.FormClosing += Configure_FormClosing;
             ToolStripMenuItemAddAction.Click += ToolStripMenuItemAddAction_Click;
             ToolStripMenuItemRemoveAction.Click += ToolStripMenuItemRemoveAction_Click;
             comboBoxGesture.DisplayMember = "Value";
@@ -166,14 +165,6 @@ namespace Stroke.Configure
             }
 
             treeViewAction.ExpandAll();
-        }
-
-        private void Configure_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = $"{Application.StartupPath}\\Stroke.exe";
-            process.StartInfo.WorkingDirectory = Application.StartupPath;
-            process.Start();
         }
 
         private void comboBoxMouse_SelectedIndexChanged(object sender, EventArgs e)

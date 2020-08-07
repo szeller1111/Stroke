@@ -45,5 +45,11 @@
     <Compile Include="Base.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stroke\Stroke.csproj">
+      <Project>{4bf7e1c7-8683-47a3-99ff-76eceda97bb4}</Project>
+      <Name>Stroke</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -312,12 +312,14 @@ namespace Stroke
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool IsIconic(IntPtr hWnd);
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr GetDesktopWindow();
-
         }
 
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
+
+        public static void Activate()
+        {
+            while (!API.SetForegroundWindow(Stroke.CurrentWindow)) ;
+        }
 
         public static void KeyDown(Keys key)
         {
@@ -434,42 +436,30 @@ namespace Stroke
 
         public static void SetWindowState(WindowState state)
         {
-            IntPtr hWnd = IntPtr.Zero;
-            while (hWnd == IntPtr.Zero)
-            {
-                hWnd = API.GetForegroundWindow();
-            }
-
-            if (hWnd == API.GetDesktopWindow())
-            {
-                return;
-            }
-
             switch (state)
             {
                 case WindowState.Normal:
-                    API.PostMessage(hWnd, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_RESTORE, 0);
+                    API.PostMessage(Stroke.CurrentWindow, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_RESTORE, 0);
                     break;
                 case WindowState.Minimize:
-                    API.PostMessage(hWnd, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_MINIMIZE, 0);
+                    API.PostMessage(Stroke.CurrentWindow, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_MINIMIZE, 0);
                     break;
                 case WindowState.Maximize:
-                    API.PostMessage(hWnd, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_MAXIMIZE, 0);
+                    API.PostMessage(Stroke.CurrentWindow, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_MAXIMIZE, 0);
                     break;
                 case WindowState.Close:
-                    API.PostMessage(hWnd, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_CLOSE, 0);
+                    API.PostMessage(Stroke.CurrentWindow, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_CLOSE, 0);
                     break;
             }
         }
 
         public static WindowState GetWindowState()
         {
-            IntPtr hWnd = API.GetForegroundWindow();
-            if (API.IsIconic(hWnd))
+            if (API.IsIconic(Stroke.CurrentWindow))
             {
                 return WindowState.Minimize;
             }
-            else if (API.IsZoomed(hWnd))
+            else if (API.IsZoomed(Stroke.CurrentWindow))
             {
                 return WindowState.Maximize;
             }

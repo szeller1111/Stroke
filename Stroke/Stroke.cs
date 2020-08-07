@@ -19,7 +19,7 @@ namespace Stroke
         private Point lastPoint = new Point(0, 0);
         private List<Point> drwaingPoints = new List<Point>();
         private readonly int threshold = 80;
-        private IntPtr currentWindow;
+        public static IntPtr CurrentWindow;
 
         private void InitializeComponent()
         {
@@ -68,7 +68,7 @@ namespace Stroke
             {
                 if (e.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
-                    currentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y)), API.GetAncestorFlags.GA_ROOT);
+                    CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y)), API.GetAncestorFlags.GA_ROOT);
                     stroking = true;
                     Cursor.Hide();
                     lastPoint = e.Location;
@@ -109,7 +109,7 @@ namespace Stroke
 
                         if (similarity > threshold)
                         {
-                            API.GetWindowThreadProcessId(currentWindow, out uint pid);
+                            API.GetWindowThreadProcessId(CurrentWindow, out uint pid);
                             IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
                             StringBuilder path = new StringBuilder(256);
                             API.GetModuleFileNameEx(hProcess, IntPtr.Zero, path, (uint)path.Capacity);
@@ -134,7 +134,6 @@ namespace Stroke
                                         {
                                             var task = Task.Run(() =>
                                             {
-                                                while (!API.SetForegroundWindow(currentWindow)) ;
                                                 Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                             });
                                             stroked = false;
@@ -200,7 +199,7 @@ namespace Stroke
 
                 if (gesture != "#")
                 {
-                    API.GetWindowThreadProcessId(currentWindow, out uint pid);
+                    API.GetWindowThreadProcessId(CurrentWindow, out uint pid);
                     IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
                     StringBuilder path = new StringBuilder(256);
                     API.GetModuleFileNameEx(hProcess, IntPtr.Zero, path, (uint)path.Capacity);
@@ -230,7 +229,6 @@ namespace Stroke
                                     API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
                                     var task = Task.Run(() =>
                                     {
-                                        while (!API.SetForegroundWindow(currentWindow)) ;
                                         Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                     });
                                     abolish = true;

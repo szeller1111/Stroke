@@ -611,10 +611,6 @@ namespace Stroke
         public static extern IntPtr GetAncestor(IntPtr hwnd, GetAncestorFlags gaFlags);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         public enum AccessRights : int
@@ -639,5 +635,6 @@ namespace Stroke
 
         [DllImport("Psapi.dll", EntryPoint = "GetModuleFileNameEx")]
         public static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpFilename, uint nSize);
+
     }
 }
