@@ -132,9 +132,9 @@ namespace Stroke
                                     {
                                         if (action.Gesture == Settings.Gestures[index].Name)
                                         {
-                                            API.SetForegroundWindow(currentWindow);
                                             var task = Task.Run(() =>
                                             {
+                                                while (!API.SetForegroundWindow(currentWindow)) ;
                                                 Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                             });
                                             stroked = false;
@@ -228,9 +228,9 @@ namespace Stroke
                                     Cursor.Show();
                                     this.Refresh();
                                     API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
-                                    API.SetForegroundWindow(currentWindow);
                                     var task = Task.Run(() =>
                                     {
+                                        while (!API.SetForegroundWindow(currentWindow)) ;
                                         Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                     });
                                     abolish = true;

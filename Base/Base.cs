@@ -272,6 +272,10 @@ namespace Stroke
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             public static extern IntPtr GetForegroundWindow();
 
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool SetForegroundWindow(IntPtr hWnd);
+
             public const uint WM_SYSCOMMAND = 0x0112;
 
             public enum SystemCommand : int
@@ -307,6 +311,9 @@ namespace Stroke
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool IsIconic(IntPtr hWnd);
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern IntPtr GetDesktopWindow();
 
         }
 
@@ -427,7 +434,17 @@ namespace Stroke
 
         public static void SetWindowState(WindowState state)
         {
-            IntPtr hWnd = API.GetForegroundWindow();
+            IntPtr hWnd = IntPtr.Zero;
+            while (hWnd == IntPtr.Zero)
+            {
+                hWnd = API.GetForegroundWindow();
+            }
+
+            if (hWnd == API.GetDesktopWindow())
+            {
+                return;
+            }
+
             switch (state)
             {
                 case WindowState.Normal:
