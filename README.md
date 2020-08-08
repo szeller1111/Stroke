@@ -55,4 +55,25 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 
 - Base.Run(string fileName, string arguments = "", string workingDirectory = "")：启动指定的应用程序或文件。
 
+## 常见问题
+
+- 为什么我不能操作某些窗体（例如：任务管理器）？
+由于 Stroke 选择了 uiAccess="false" 设置，你需要使用管理员权限运行 Stroke 时才能与这些界面交互。
+
+- 我想开机就运行 Stroke，我该怎么做？
+我推荐以下两种方式，可以根据你的需求进行选择。
+第一种，使用任务计划程序，在常规选项卡勾选“使用最高权限运行”，触发器选择“登录时”，操作选择“启动程序”（注意：起始位置必须填写 Stroke.exe 所在的目录）。
+第二种，将配置文件“Stroke/app.manifest”内的 uiAccess 属性设置为 true，编译并对程序进行签名，然后将整个目录放入“C:\Program Files”内，最后将 Stroke.exe 的快捷方式放入启动目录（shell:startup）。
+
+- 我应该将写好的 dll 放在哪里？
+请放在 Stroke.exe 所在的同一目录内。
+
+- 我在写 dll 时需要知道当前操作的窗体的句柄，如何获取到它？
+将 Stroke 引入你的项目，Stroke.CurrentWindow 就是当前窗体的句柄。
+
+- 为什么我修改后的手势和我画的不一样？
+当你重画已有手势的时候，Stroke.Configure 不会直接覆盖原有的手势，而是使用你新画的手势来修正它。你可以不断地重画已有的手势，这样能让它变得更一般化。
+
+- 如何隐藏屏幕上的画笔？
+在 Stroke.Configure 中将画笔的“不透明度”或“粗细”调至零即可。
 
