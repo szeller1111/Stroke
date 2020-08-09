@@ -77,3 +77,5 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 - 如何隐藏屏幕上的画笔？
 在 Stroke.Configure 中将画笔的“不透明度”或“粗细”调至零即可。
 
+- 为什么我每次打开 Stroke.Configure 时 Stroke 都会退出？
+由于 Stroke 会影响 Stroke.Configure 进行手势设置，因此 Stroke.Configure 在启动时会结束 Stroke 的进程。请在完成设置之后自行启动 Stroke。
