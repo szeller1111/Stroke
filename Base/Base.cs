@@ -312,6 +312,9 @@ namespace Stroke
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool IsIconic(IntPtr hWnd);
 
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
+
         }
 
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
@@ -436,6 +439,14 @@ namespace Stroke
 
         public static void SetWindowState(WindowState state)
         {
+            System.Text.StringBuilder windowClassName = new System.Text.StringBuilder(256);
+            API.GetClassName(Stroke.CurrentWindow, windowClassName, windowClassName.Capacity);
+
+            if (windowClassName.ToString() == "WorkerW")
+            {
+                return;
+            }
+
             switch (state)
             {
                 case WindowState.Normal:

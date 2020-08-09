@@ -52,7 +52,7 @@ namespace Stroke.Configure
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                System.Drawing.Pen pen = new System.Drawing.Pen(Settings.Pen.Color, thickness * 2);
+                System.Drawing.Pen pen = new System.Drawing.Pen(Color.FromArgb(31, 127, 255), thickness * 2);
                 pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
                 graphics.DrawLines(pen, points);
                 graphics.Dispose();
