@@ -132,10 +132,7 @@ namespace Stroke
                                     {
                                         if (action.Gesture == Settings.Gestures[index].Name)
                                         {
-                                            var task = Task.Run(() =>
-                                            {
-                                                Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
-                                            });
+                                            Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                             stroked = false;
                                             drwaingPoints.Clear();
                                             return true;
@@ -227,10 +224,7 @@ namespace Stroke
                                     Cursor.Show();
                                     this.Refresh();
                                     API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
-                                    var task = Task.Run(() =>
-                                    {
-                                        Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
-                                    });
+                                    Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                     abolish = true;
                                     return true;
                                 }

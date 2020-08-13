@@ -317,7 +317,13 @@ namespace Stroke
 
         }
 
+        private static bool keyboardState = true;
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
+
+        static Base()
+        {
+            KeyboardHook.KeyboardAction += KeyboardHook_KeyboardAction;
+        }
 
         public static void Activate()
         {
@@ -461,6 +467,28 @@ namespace Stroke
                 case WindowState.Close:
                     API.PostMessage(Stroke.CurrentWindow, API.WM_SYSCOMMAND, (int)API.SystemCommand.SC_CLOSE, 0);
                     break;
+            }
+        }
+
+        public static void EnableKeyboard()
+        {
+            keyboardState = true;
+        }
+
+        public static void DisableKeyboard()
+        {
+            keyboardState = false;
+        }
+
+        private static bool KeyboardHook_KeyboardAction(object sender, KeyboardHook.KeyboardActionArgs e)
+        {
+            if (keyboardState)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 

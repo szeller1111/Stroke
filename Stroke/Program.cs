@@ -26,10 +26,12 @@ namespace Stroke
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Stroke stroke = new Stroke();
+            KeyboardHook.StartHook();
             MouseHook.StartHook();
             Script.CompileScript();
             Application.Run(stroke);
             MouseHook.StopHook();
+            KeyboardHook.StopHook();
         }
     }
 }
