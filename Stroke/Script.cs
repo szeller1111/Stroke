@@ -57,7 +57,7 @@ namespace Stroke
                     builder.AppendLine(Indent(2) + $" // {package.Name}.{action.Name}");
                     builder.AppendLine(Indent(2) + $"static public void {Functions[$"{package.Name}.{action.Name}"]}()");
                     builder.AppendLine(Indent(2) + "{");
-                    foreach (string line in action.Code.Split('\n'))
+                    foreach (string line in action.Code.Replace("\r", "").Split('\n'))
                     {
                         builder.AppendLine(Indent(3) + line.Replace(@"\", @"\\"));
                     }
@@ -112,7 +112,14 @@ namespace Stroke
 
         public static void RunScript(string name)
         {
-            Scripts.GetMethod(Functions[name]).Invoke(Instance, null);
+            try
+            {
+                Scripts.GetMethod(Functions[name]).Invoke(Instance, null);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
 
     }

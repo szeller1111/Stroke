@@ -144,7 +144,9 @@
             this.Controls.Add(this.textBoxColor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(300, 200);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "PenConfigure";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

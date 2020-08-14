@@ -67,7 +67,7 @@ namespace Stroke.Configure
                         IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
                         StringBuilder path = new StringBuilder(256);
                         API.GetModuleFileNameEx(hProcess, IntPtr.Zero, path, (uint)path.Capacity);
-                        richTextBoxCode.Text = richTextBoxCode.Text.TrimEnd('\n') + '\n' + Regex.Replace(path.ToString(), @"([\\\.\{\}\[\]\(\)\^\$\|\*\+\?])", @"\$1");
+                        textBoxCode.Text = textBoxCode.Text.TrimEnd('\n').TrimEnd('\r') + "\r\n" + Regex.Replace(path.ToString(), @"([\\\.\{\}\[\]\(\)\^\$\|\*\+\?])", @"\$1");
                         spy = false;
                         Cursor.Current = Cursors.Default;
                     }
@@ -165,6 +165,7 @@ namespace Stroke.Configure
             }
 
             treeViewAction.ExpandAll();
+            treeViewAction.SelectedNode = treeViewAction.Nodes[0];
         }
 
         private void comboBoxMouse_SelectedIndexChanged(object sender, EventArgs e)
@@ -248,15 +249,15 @@ namespace Stroke.Configure
             }
         }
 
-        private void richTextBoxCode_TextChanged(object sender, EventArgs e)
+        private void textBoxCode_TextChanged(object sender, EventArgs e)
         {
             if (CurrentAction != null)
             {
-                CurrentAction.Code = richTextBoxCode.Text;
+                CurrentAction.Code = textBoxCode.Text.Replace("\t", "    ");
             }
-            else
+            else if (CurrentActionPackage != null)
             {
-                CurrentActionPackage.Code = richTextBoxCode.Text;
+                CurrentActionPackage.Code = textBoxCode.Text;
             }
         }
 
@@ -286,7 +287,7 @@ namespace Stroke.Configure
                 CurrentActionPackage = Settings.ActionPackages[treeViewAction.SelectedNode.Index];
                 CurrentAction = null;
                 textBoxName.Text = CurrentActionPackage.Name;
-                richTextBoxCode.Text = CurrentActionPackage.Code;
+                textBoxCode.Text = CurrentActionPackage.Code;
                 if (e.Node.Nodes.Count == 0)
                 {
                     CurrentActionPackage.Actions.Add(new Action("", "", ""));
@@ -302,7 +303,7 @@ namespace Stroke.Configure
                 CurrentAction = CurrentActionPackage.Actions[treeViewAction.SelectedNode.Index];
                 textBoxName.Text = CurrentAction.Name;
                 comboBoxGesture.SelectedValue = CurrentAction.Gesture;
-                richTextBoxCode.Text = CurrentAction.Code;
+                textBoxCode.Text = CurrentAction.Code;
             }
         }
 

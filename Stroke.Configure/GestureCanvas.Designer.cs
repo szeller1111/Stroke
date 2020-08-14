@@ -28,6 +28,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GestureCanvas";
+            this.Opacity = 0.8D;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
