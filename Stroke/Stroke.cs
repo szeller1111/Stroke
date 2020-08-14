@@ -70,6 +70,7 @@ namespace Stroke
                 {
                     CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y)), API.GetAncestorFlags.GA_ROOT);
                     stroking = true;
+                    this.TopMost = true;
                     Cursor.Hide();
                     lastPoint = e.Location;
                     drwaingPoints.Add(e.Location);
@@ -117,7 +118,7 @@ namespace Stroke
                             for (int i = Settings.ActionPackages.Count - 1; i > -1; i--)
                             {
                                 bool match = false;
-                                foreach (string item in Settings.ActionPackages[i].Code.Split('\n'))
+                                foreach (string item in Settings.ActionPackages[i].Code.Replace("\r", "").Split('\n'))
                                 {
                                     if (item != "" && Regex.IsMatch(path.ToString(), item))
                                     {
@@ -204,7 +205,7 @@ namespace Stroke
                     for (int i = Settings.ActionPackages.Count - 1; i > -1; i--)
                     {
                         bool match = false;
-                        foreach (string item in Settings.ActionPackages[i].Code.Split('\n'))
+                        foreach (string item in Settings.ActionPackages[i].Code.Replace("\r", "").Split('\n'))
                         {
                             if (item != "" && Regex.IsMatch(path.ToString(), item))
                             {
