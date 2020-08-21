@@ -473,11 +473,13 @@ namespace Stroke
         public static void EnableKeyboard()
         {
             keyboardState = true;
+            KeyboardHook.StopHook();
         }
 
         public static void DisableKeyboard()
         {
             keyboardState = false;
+            KeyboardHook.StartHook();
         }
 
         private static bool KeyboardHook_KeyboardAction(object sender, KeyboardHook.KeyboardActionArgs e)

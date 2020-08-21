@@ -238,7 +238,10 @@ namespace Stroke
 
             if (e.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking && !abolish)
             {
-                stroked = true;
+                if (drwaingPoints.Count > 5)
+                {
+                    stroked = true;
+                }
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)
                 {
                     API.SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.SHOWWINDOW));
