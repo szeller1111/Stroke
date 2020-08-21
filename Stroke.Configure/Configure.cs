@@ -245,7 +245,7 @@ namespace Stroke.Configure
         {
             if (CurrentAction != null)
             {
-                CurrentAction.Gesture = (string)comboBoxGesture.SelectedValue;
+                CurrentAction.Gesture = comboBoxGesture.SelectedValue == null ? "" : (string)comboBoxGesture.SelectedValue;
             }
         }
 
