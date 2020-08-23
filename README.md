@@ -60,7 +60,7 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
   - KeyboardActionArgs：键盘事件参数的类型，成员如下：
     - Key：它是一个 Keys 类型的对象，表示该事件相关的按键。
     - KeyState：它是一个 KeyStates 类型的对象，表示该事件相关的按键状态。
-  - KeyboardActionHandler：事件处理函数的委托类型，它含有一个 KeyboardActionArgs 类型的参数以及 bool 类型的返回值。
+  - KeyboardActionHandler：事件处理函数的委托类型，它含有一个 KeyboardActionArgs 类型的参数以及 bool 类型的返回值。当返回值为 True 时，表示该事件已经被处理不再传递。
   - KeyboardAction：键盘事件，你应当将处理函数订阅到该事件。
   - StartHook()：启用键盘钩子。
   - StopHook()：停用键盘钩子。
