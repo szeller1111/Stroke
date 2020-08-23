@@ -8,6 +8,12 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 
 - Base.Data：是一个 Dictionary<string, object> 类型的对象，它能够解决脚本中只能声明局部变量的问题。
 
+- Base.PenColor：是一个 Color 类型的对象，它能够获取或设置当前画笔的颜色。
+
+- Base.PenOpacity：是一个 double 类型的对象（取值范围为 \[0,1\]），它能够获取或设置当前画笔的不透明度。
+
+- Base.PenThickness：是一个 byte 类型的对象（取值范围为 \[0,10\]），它能够获取或设置当前画笔的粗细。
+
 - Base.Activate()：激活当前操作的窗体。（为了避免激活窗体带来的副作用，Stroke 在执行动作前并不激活任何窗体。）
 
 - Base.KeyDown(Keys key)：按下键盘上的某个键。Keys 定义在 [System.Windows.Forms.Keys](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys) 中。
@@ -15,11 +21,8 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 - Base.KeyUp(Keys key)：弹起键盘上的某个键。
 
 - Base.PressKeys(string keys)：允许你执行一串按键序列操作。以下列出该函数所支持的所有字符（不区分大小写）及其含义：
-  
   - 所有英文字母和数字：按下并弹起对应的键。
-  
   - 修饰键：
-    
     - (：按下 Ctrl 键。
     - )：弹起 Ctrl 键。
     - \[：按下 Shift 键。
@@ -28,9 +31,7 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
     - }：弹起 Alt 键。
     - \<：按下 Win 键。
     - \>：弹起 Win 键。
-  
   - 其他：
-    
     - \t：Tab 键。
     - \r：Return(Enter) 键。
     - \e：Escape 键。
@@ -40,13 +41,9 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
     - \d：Delete 键。
 
 - Base.WindowState：它是关于窗口状态的枚举类型，有以下四种：
-  
   - Normal：正常。
-  
   - Minimize：最小化。
-  
   - Maximize：最大化。
-  
   - Close：关闭。
 
 - Base.SetWindowState(WindowState state)：设置当前窗体的状态。
@@ -55,9 +52,18 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 
 - Base.Run(string fileName, string arguments = "", string workingDirectory = "")：启动指定的应用程序或文件。
 
-- Base.EnableKeyboard()：启用键盘。
-
-- Base.DisableKeyboard()：禁用键盘。
+- Base.KeyboardHook：键盘钩子工具类，它能够获取用户当前的键盘状态，成员如下：
+  - KeyStates：它是关于按键状态的枚举类型，有以下三种：
+    - None：没有按任何键。
+    - Down：按下某键。
+    - Up：弹起某键。
+  - KeyboardActionArgs：键盘事件参数的类型，成员如下：
+    - Key：它是一个 Keys 类型的对象，表示该事件相关的按键。
+    - KeyState：它是一个 KeyStates 类型的对象，表示该事件相关的按键状态。
+  - KeyboardActionHandler：事件处理函数的委托类型，它含有一个 KeyboardActionArgs 类型的参数以及 bool 类型的返回值。
+  - KeyboardAction：键盘事件，你应当将处理函数订阅到该事件。
+  - StartHook()：启用键盘钩子。
+  - StopHook()：停用键盘钩子。
 
 
 ## 常见问题
