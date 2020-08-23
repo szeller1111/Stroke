@@ -34,19 +34,19 @@ namespace Stroke.Configure
         private Point lastPoint = new Point(0, 0);
         private List<Point> drwaingPoints = new List<Point>();
 
-        private bool MouseHook_MouseAction(object sender, MouseHook.MouseActionArgs e)
+        private bool MouseHook_MouseAction(MouseHook.MouseActionArgs args)
         {
-            if (e.MouseButton == Settings.StrokeButton)
+            if (args.MouseButton == Settings.StrokeButton)
             {
-                if (e.MouseButtonState == MouseHook.MouseButtonStates.Down)
+                if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
                     stroking = true;
                     Cursor.Hide();
-                    lastPoint = e.Location;
-                    drwaingPoints.Add(e.Location);
+                    lastPoint = args.Location;
+                    drwaingPoints.Add(args.Location);
                     return true;
                 }
-                else if (e.MouseButtonState == MouseHook.MouseButtonStates.Up)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up)
                 {
                     stroking = false;
                     Cursor.Show();
@@ -79,15 +79,15 @@ namespace Stroke.Configure
                 }
             }
 
-            if (e.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking)
+            if (args.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking)
             {
                 stroked = true;
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)
                 {
-                    draw.DrawPath(lastPoint, e.Location);
+                    draw.DrawPath(lastPoint, args.Location);
                 }
-                lastPoint = e.Location;
-                drwaingPoints.Add(e.Location);
+                lastPoint = args.Location;
+                drwaingPoints.Add(args.Location);
             }
 
             return false;

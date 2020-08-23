@@ -54,15 +54,15 @@ namespace Stroke.Configure
             MouseHook.MouseAction += MouseHook_MouseAction;
         }
 
-        private bool MouseHook_MouseAction(object sender, MouseHook.MouseActionArgs e)
+        private bool MouseHook_MouseAction(MouseHook.MouseActionArgs args)
         {
             if (spy)
             {
                 try
                 {
-                    if (e.MouseButtonState == MouseHook.MouseButtonStates.Up)
+                    if (args.MouseButtonState == MouseHook.MouseButtonStates.Up)
                     {
-                        IntPtr hwnd = API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y));
+                        IntPtr hwnd = API.WindowFromPoint(new API.POINT(args.Location.X, args.Location.Y));
                         API.GetWindowThreadProcessId(hwnd, out uint pid);
                         IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
                         StringBuilder path = new StringBuilder(256);

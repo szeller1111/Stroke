@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -316,19 +317,148 @@ namespace Stroke
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             public static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
 
+            public const int WH_KEYBOARD_LL = 13;
+
+            [StructLayout(LayoutKind.Sequential)]
+            public struct KBDLLHOOKSTRUCT
+            {
+                public uint vkCode;
+                public uint scanCode;
+                public uint flags;
+                public uint time;
+                public IntPtr dwExtraInfo;
+            }
+
+            public enum KeyboardMessages
+            {
+                WM_ACTIVATE = 0x0006,
+                WM_SETFOCUS = 0x0007,
+                WM_KILLFOCUS = 0x0008,
+
+                WM_KEYDOWN = 0x0100,
+                WM_KEYUP = 0x0101,
+
+                WM_CHAR = 0x0102,
+                WM_DEADCHAR = 0x0103,
+
+                WM_SYSKEYDOWN = 0x0104,
+                WM_SYSKEYUP = 0x0105,
+
+                WM_SYSDEADCHAR = 0x0107,
+
+                WM_UNICHAR = 0x0109,
+
+                WM_HOTKEY = 0x0312,
+
+                WM_APPCOMMAND = 0x0319
+            }
+
+            public delegate IntPtr HOOKPROC(int nCode, IntPtr wParam, IntPtr lParam);
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern IntPtr SetWindowsHookEx(int idHook, HOOKPROC lpfn, IntPtr hMod, uint dwThreadId);
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern IntPtr GetModuleHandle(string lpModuleName);
         }
 
-        private static bool keyboardState = true;
+        public static class KeyboardHook
+        {
+            public enum KeyStates
+            {
+                None,
+                Down,
+                Up
+            }
+
+            public class KeyboardActionArgs
+            {
+                public readonly Keys Key;
+                public readonly KeyStates KeyState;
+
+                public KeyboardActionArgs(Keys key, KeyStates keyState)
+                {
+                    Key = key;
+                    KeyState = keyState;
+                }
+            }
+
+            public delegate bool KeyboardActionHandler(KeyboardActionArgs args);
+            public static event KeyboardActionHandler KeyboardAction;
+            public static bool Enable = false;
+
+            private static API.HOOKPROC _proc = HookCallback;
+            private static IntPtr _hookID = IntPtr.Zero;
+
+            public static void StartHook()
+            {
+                _hookID = SetHook(_proc);
+                Enable = true;
+            }
+
+            public static void StopHook()
+            {
+                API.UnhookWindowsHookEx(_hookID);
+                Enable = false;
+            }
+
+            private static IntPtr SetHook(API.HOOKPROC proc)
+            {
+                using (ProcessModule module = Process.GetCurrentProcess().MainModule)
+                {
+                    return API.SetWindowsHookEx(API.WH_KEYBOARD_LL, proc, API.GetModuleHandle(module.ModuleName), 0);
+                }
+            }
+
+            private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+            {
+                if (nCode < 0 || Enable == false)
+                {
+                    return API.CallNextHookEx(_hookID, nCode, wParam, lParam);
+                }
+
+                API.KBDLLHOOKSTRUCT hookStruct = (API.KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(API.KBDLLHOOKSTRUCT));
+
+                Keys key = (Keys)hookStruct.vkCode;
+                KeyStates keyState = KeyStates.None;
+
+                switch ((API.KeyboardMessages)wParam)
+                {
+                    case API.KeyboardMessages.WM_KEYDOWN:
+                        {
+                            keyState = KeyStates.Down;
+                        }
+                        break;
+                    case API.KeyboardMessages.WM_KEYUP:
+                        {
+                            keyState = KeyStates.Up;
+                        }
+                        break;
+                }
+
+                if (KeyboardAction(new KeyboardActionArgs(key, keyState)))
+                {
+                    return (IntPtr)1;
+                }
+
+                return API.CallNextHookEx(_hookID, nCode, wParam, lParam);
+            }
+
+        }
+
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
 
         public static Color PenColor { get => Settings.Pen.Color; set => Settings.Pen.Color = value; }
         public static double PenOpacity { get => Settings.Pen.Opacity; set => Settings.Pen.Opacity = value; }
         public static byte PenThickness { get => Settings.Pen.Thickness; set => Settings.Pen.Thickness = value; }
 
-        static Base()
-        {
-            KeyboardHook.KeyboardAction += KeyboardHook_KeyboardAction;
-        }
 
         public static void Activate()
         {
@@ -507,30 +637,6 @@ namespace Stroke
             }
 
             process.Start();
-        }
-
-        public static void EnableKeyboard()
-        {
-            keyboardState = true;
-            KeyboardHook.StopHook();
-        }
-
-        public static void DisableKeyboard()
-        {
-            keyboardState = false;
-            KeyboardHook.StartHook();
-        }
-
-        private static bool KeyboardHook_KeyboardAction(object sender, KeyboardHook.KeyboardActionArgs e)
-        {
-            if (keyboardState)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
 
     }

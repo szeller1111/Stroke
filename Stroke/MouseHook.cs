@@ -33,7 +33,7 @@ namespace Stroke
             }
         }
 
-        public delegate bool MouseActionHandler(object sender, MouseActionArgs e);
+        public delegate bool MouseActionHandler(MouseActionArgs args);
         public static event MouseActionHandler MouseAction;
         public static bool Enable = false;
 
@@ -200,7 +200,7 @@ namespace Stroke
                     break;
             }
 
-            if (MouseAction(null, new MouseActionArgs(location, mouseButton, mouseButtonState, wheelDelta)))
+            if (MouseAction(new MouseActionArgs(location, mouseButton, mouseButtonState, wheelDelta)))
             {
                 return (IntPtr)1;
             }

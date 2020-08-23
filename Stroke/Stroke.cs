@@ -70,21 +70,21 @@ namespace Stroke
             draw.Dispose();
         }
 
-        private bool MouseHook_MouseAction(object sender, MouseHook.MouseActionArgs e)
+        private bool MouseHook_MouseAction(MouseHook.MouseActionArgs args)
         {
-            if (e.MouseButton == Settings.StrokeButton)
+            if (args.MouseButton == Settings.StrokeButton)
             {
-                if (e.MouseButtonState == MouseHook.MouseButtonStates.Down)
+                if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
-                    CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(e.Location.X, e.Location.Y)), API.GetAncestorFlags.GA_ROOT);
+                    CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(args.Location.X, args.Location.Y)), API.GetAncestorFlags.GA_ROOT);
                     stroking = true;
                     this.TopMost = true;
                     Cursor.Hide();
-                    lastPoint = e.Location;
-                    drwaingPoints.Add(e.Location);
+                    lastPoint = args.Location;
+                    drwaingPoints.Add(args.Location);
                     return true;
                 }
-                else if (e.MouseButtonState == MouseHook.MouseButtonStates.Up)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up)
                 {
                     if (abolish)
                     {
@@ -166,13 +166,13 @@ namespace Stroke
             {
                 string gesture = "#";
 
-                if (e.MouseButtonState == MouseHook.MouseButtonStates.Down)
+                if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
                     return true;
                 }
-                else if (e.MouseButtonState == MouseHook.MouseButtonStates.Up)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up)
                 {
-                    switch (e.MouseButton)
+                    switch (args.MouseButton)
                     {
                         case MouseButtons.Middle:
                             gesture = gesture + (int)(SpecialGesture.MiddleClick);
@@ -191,9 +191,9 @@ namespace Stroke
                             break;
                     }
                 }
-                else if (e.MouseButtonState == MouseHook.MouseButtonStates.Wheel)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Wheel)
                 {
-                    if (e.WheelDelta > 0)
+                    if (args.WheelDelta > 0)
                     {
                         gesture = gesture + (int)(SpecialGesture.WheelUp);
                     }
@@ -244,7 +244,7 @@ namespace Stroke
                 }
             }
 
-            if (e.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking && !abolish)
+            if (args.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking && !abolish)
             {
                 if (drwaingPoints.Count > 5)
                 {
@@ -253,10 +253,10 @@ namespace Stroke
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)
                 {
                     API.SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.SHOWWINDOW));
-                    draw.DrawPath(lastPoint, e.Location);
+                    draw.DrawPath(lastPoint, args.Location);
                 }
-                lastPoint = e.Location;
-                drwaingPoints.Add(e.Location);
+                lastPoint = args.Location;
+                drwaingPoints.Add(args.Location);
             }
 
             return false;
