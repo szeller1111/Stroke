@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -319,6 +320,10 @@ namespace Stroke
 
         private static bool keyboardState = true;
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
+
+        public static Color PenColor { get => Settings.Pen.Color; set => Settings.Pen.Color = value; }
+        public static double PenOpacity { get => Settings.Pen.Opacity; set => Settings.Pen.Opacity = value; }
+        public static byte PenThickness { get => Settings.Pen.Thickness; set => Settings.Pen.Thickness = value; }
 
         static Base()
         {

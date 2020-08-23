@@ -12,7 +12,7 @@ namespace Stroke
 {
     public partial class Stroke : Form
     {
-        private readonly Draw draw;
+        private Draw draw;
         private bool stroking = false;
         private bool stroked = false;
         private bool abolish = false;
@@ -49,7 +49,15 @@ namespace Stroke
             this.Shown += Stroke_Shown;
             this.FormClosing += Stroke_FormClosing;
             MouseHook.MouseAction += MouseHook_MouseAction;
+            Settings.Pen.PenChanged += Pen_PenChanged;
             API.AllowSetForegroundWindow(Process.GetCurrentProcess().Id);
+        }
+
+        private void Pen_PenChanged()
+        {
+            draw.Dispose();
+            GC.Collect();
+            draw = new Draw(this.Handle, API.CreatePen(API.PenStyle.PS_SOLID, Settings.Pen.Thickness, new API.COLORREF(Settings.Pen.Color.R, Settings.Pen.Color.G, Settings.Pen.Color.B)));
         }
 
         private void Stroke_Shown(object sender, EventArgs e)

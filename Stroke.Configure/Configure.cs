@@ -86,10 +86,7 @@ namespace Stroke.Configure
         {
             Settings.StrokeButton = MouseButtons.Right;
 
-            Settings.Pen = new Pen();
-            Settings.Pen.Color = Color.FromArgb(31, 127, 255);
-            Settings.Pen.Opacity = 0.8;
-            Settings.Pen.Thickness = 4;
+            Settings.Pen = new Pen(Color.FromArgb(31, 127, 255), 0.8, 5);
 
             Settings.Gestures = new List<Gesture>();
             Settings.Gestures.Add(new Gesture("↑", new List<Point> { new Point(0, 0), new Point(0, -1) }));
