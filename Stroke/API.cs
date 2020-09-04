@@ -595,11 +595,11 @@ namespace Stroke
             SYNCHRONIZE = (int)0x00100000L
         }
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr OpenProcess(AccessRights dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
-        [DllImport("Psapi.dll", EntryPoint = "GetModuleFileNameEx")]
-        public static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpFilename, uint nSize);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool QueryFullProcessImageName(IntPtr hProcess, uint dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
 
     }
 }

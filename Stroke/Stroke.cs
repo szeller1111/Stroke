@@ -119,9 +119,10 @@ namespace Stroke
                         if (similarity > threshold)
                         {
                             API.GetWindowThreadProcessId(CurrentWindow, out uint pid);
-                            IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
-                            StringBuilder path = new StringBuilder(256);
-                            API.GetModuleFileNameEx(hProcess, IntPtr.Zero, path, (uint)path.Capacity);
+                            IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION, false, (int)pid);
+                            StringBuilder path = new StringBuilder(1024);
+                            uint size = (uint)path.Capacity;
+                            API.QueryFullProcessImageName(hProcess, 0, path, ref size);
 
                             for (int i = Settings.ActionPackages.Count - 1; i > -1; i--)
                             {
@@ -206,9 +207,10 @@ namespace Stroke
                 if (gesture != "#")
                 {
                     API.GetWindowThreadProcessId(CurrentWindow, out uint pid);
-                    IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
-                    StringBuilder path = new StringBuilder(256);
-                    API.GetModuleFileNameEx(hProcess, IntPtr.Zero, path, (uint)path.Capacity);
+                    IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION, false, (int)pid);
+                    StringBuilder path = new StringBuilder(1024);
+                    uint size = (uint)path.Capacity;
+                    API.QueryFullProcessImageName(hProcess, 0, path, ref size);
 
                     for (int i = Settings.ActionPackages.Count - 1; i > -1; i--)
                     {

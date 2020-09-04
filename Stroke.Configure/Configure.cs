@@ -64,9 +64,10 @@ namespace Stroke.Configure
                     {
                         IntPtr hwnd = API.WindowFromPoint(new API.POINT(args.Location.X, args.Location.Y));
                         API.GetWindowThreadProcessId(hwnd, out uint pid);
-                        IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION | API.AccessRights.PROCESS_VM_READ, false, (int)pid);
-                        StringBuilder path = new StringBuilder(256);
-                        API.GetModuleFileNameEx(hProcess, IntPtr.Zero, path, (uint)path.Capacity);
+                        IntPtr hProcess = API.OpenProcess(API.AccessRights.PROCESS_QUERY_INFORMATION, false, (int)pid);
+                        StringBuilder path = new StringBuilder(1024);
+                        uint size = (uint)path.Capacity;
+                        API.QueryFullProcessImageName(hProcess, 0, path, ref size);
                         textBoxCode.Text = textBoxCode.Text.TrimEnd('\n').TrimEnd('\r') + "\r\n" + Regex.Replace(path.ToString(), @"([\\\.\{\}\[\]\(\)\^\$\|\*\+\?])", @"\$1");
                         spy = false;
                         Cursor.Current = Cursors.Default;
