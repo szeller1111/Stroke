@@ -62,7 +62,7 @@ namespace Stroke
 
         private void Stroke_Shown(object sender, EventArgs e)
         {
-            API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
+            API.SetWindowLong(this.Handle, API.WindowLong.GWL_EXSTYLE, API.GetWindowLong(this.Handle, API.WindowLong.GWL_EXSTYLE) | (uint)(API.WindowStylesExtended.WS_EX_TRANSPARENT | API.WindowStylesExtended.WS_EX_LAYERED | API.WindowStylesExtended.WS_EX_NOACTIVATE | API.WindowStylesExtended.WS_EX_TOPMOST));
         }
 
         private void Stroke_FormClosing(object sender, FormClosingEventArgs e)
@@ -96,7 +96,6 @@ namespace Stroke
                     stroking = false;
                     Cursor.Show();
                     this.Refresh();
-                    API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
                     if (stroked)
                     {
                         Gesture gesture = new Gesture("", drwaingPoints);
@@ -234,7 +233,6 @@ namespace Stroke
                                     drwaingPoints.Clear();
                                     Cursor.Show();
                                     this.Refresh();
-                                    API.SetWindowPos(this.Handle, (IntPtr)(1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.HIDEWINDOW));
                                     Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                     abolish = true;
                                     return true;
@@ -254,7 +252,6 @@ namespace Stroke
                 }
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)
                 {
-                    API.SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, (API.SWP.NOSIZE | API.SWP.NOMOVE | API.SWP.NOACTIVATE | API.SWP.SHOWWINDOW));
                     draw.DrawPath(lastPoint, args.Location);
                 }
                 lastPoint = args.Location;
