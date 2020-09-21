@@ -275,6 +275,9 @@ namespace Stroke
             public static extern IntPtr GetForegroundWindow();
 
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern short GetKeyState(int nVirtKey);
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool SetForegroundWindow(IntPtr hWnd);
 
@@ -495,7 +498,7 @@ namespace Stroke
 
             for (int i = 0; i < keys.Length; i++)
             {
-                if (keys[i] == '\\')
+                if (keys[i] == '/')
                 {
                     i++;
                     switch (keys[i])
@@ -570,6 +573,16 @@ namespace Stroke
 
         }
 
+        public static bool IsKeyDown(Keys key)
+        {
+            return (API.GetKeyState((int)key) & 0x8000) == 0x8000;
+        }
+
+        public static bool IsKeyToggled(Keys key)
+        {
+            return (API.GetKeyState((int)key) & 0x0001) == 0x0001;
+        }
+
         public enum WindowState
         {
             Normal,
@@ -623,7 +636,7 @@ namespace Stroke
 
         public static void Run(string fileName, string arguments = "", string workingDirectory = "")
         {
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            Process process = new Process();
             process.StartInfo.FileName = fileName;
             process.StartInfo.Arguments = arguments;
 

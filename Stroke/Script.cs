@@ -21,20 +21,11 @@ namespace Stroke
         public static string GenerateSource()
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("using System;");
-            builder.AppendLine("using System.Collections.Generic;");
-            builder.AppendLine("using System.Data;");
-            builder.AppendLine("using System.Drawing;");
-            builder.AppendLine("using System.IO;");
-            builder.AppendLine("using System.Linq;");
-            builder.AppendLine("using System.Reflection;");
-            builder.AppendLine("using System.Runtime.InteropServices;");
-            builder.AppendLine("using System.Text;");
-            builder.AppendLine("using System.Text.RegularExpressions;");
-            builder.AppendLine("using System.Threading;");
-            builder.AppendLine("using System.Threading.Tasks;");
-            builder.AppendLine("using System.Windows.Forms;");
-            builder.AppendLine("using System.Xml;");
+            string[] namespaces = { "System", "System.Collections", "System.Collections.Concurrent", "System.Collections.Generic", "System.Collections.ObjectModel", "System.Collections.Specialized", "System.Diagnostics", "System.Drawing", "System.Drawing.Imaging", "System.Drawing.Text", "System.IO", "System.IO.Compression", "System.IO.Pipes", "System.IO.Ports", "System.Linq", "System.Linq.Expressions", "System.Media", "System.Net", "System.Net.Http", "System.Net.Http.Headers", "System.Net.Security", "System.Net.Sockets", "System.Numerics", "System.Reflection", "System.Security", "System.Security.Authentication", "System.Security.Cryptography", "System.Text", "System.Text.RegularExpressions", "System.Threading", "System.Threading.Tasks", "System.Timers", "System.Web", "System.Windows.Forms", "System.Xml", "System.Xml.Linq", "System.Xml.Schema", "System.Xml.Serialization" };
+            foreach (string name in namespaces)
+            {
+                builder.AppendLine($"using {name};");
+            }
             builder.AppendLine();
             builder.AppendLine("namespace Stroke");
             builder.AppendLine("{");
@@ -59,7 +50,7 @@ namespace Stroke
                     builder.AppendLine(Indent(2) + "{");
                     foreach (string line in action.Code.Replace("\r", "").Split('\n'))
                     {
-                        builder.AppendLine(Indent(3) + line.Replace(@"\", @"\\"));
+                        builder.AppendLine(Indent(3) + line);
                     }
                     builder.AppendLine(Indent(2) + "}");
                     builder.AppendLine();
@@ -78,11 +69,12 @@ namespace Stroke
             parameter.GenerateExecutable = false;
             parameter.GenerateInMemory = true;
             parameter.TreatWarningsAsErrors = false;
-            parameter.ReferencedAssemblies.Add("System.dll");
-            parameter.ReferencedAssemblies.Add("System.Data.dll");
-            parameter.ReferencedAssemblies.Add("System.Drawing.dll");
-            parameter.ReferencedAssemblies.Add("System.Linq.dll");
-            parameter.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+
+            string[] assemblies = { "System.dll", "System.Core.dll", "System.Drawing.dll", "System.Net.Http.dll", "System.Web.dll", "System.Windows.Forms.dll", "System.Xml.dll", "System.Xml.Linq.dll" };
+            foreach (string assembly in assemblies)
+            {
+                parameter.ReferencedAssemblies.Add(assembly);
+            }
 
             FileInfo[] files = (new DirectoryInfo(Application.StartupPath)).GetFiles("*.dll");
             for (int i = 0; i < files.Length; i++)
