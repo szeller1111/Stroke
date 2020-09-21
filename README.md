@@ -32,13 +32,17 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
     - \<：按下 Win 键。
     - \>：弹起 Win 键。
   - 其他：
-    - \t：Tab 键。
-    - \r：Return(Enter) 键。
-    - \e：Escape 键。
-    - \s：Space 键。
-    - \b：Backspace 键。
-    - \i：Insert 键。
-    - \d：Delete 键。
+    - /t：Tab 键。
+    - /r：Return(Enter) 键。
+    - /e：Escape 键。
+    - /s：Space 键。
+    - /b：Backspace 键。
+    - /i：Insert 键。
+    - /d：Delete 键。
+
+- Base.IsKeyDown(Keys key)：某个键是否按下。
+
+- Base.IsKeyToggled(Keys key)：某键是否开启（例如：CapsLock）。
 
 - Base.WindowState：它是关于窗口状态的枚举类型，有以下四种：
   - Normal：正常。
