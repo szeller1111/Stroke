@@ -34,6 +34,7 @@
             this.ContextMenuStripAction = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripMenuItemAddAction = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemRemoveAction = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonCompile = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.ContextMenuStripActionPackage.SuspendLayout();
             this.ContextMenuStripAction.SuspendLayout();
@@ -53,7 +54,7 @@
             this.panel.Location = new System.Drawing.Point(12, 40);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(920, 510);
-            this.panel.TabIndex = 5;
+            this.panel.TabIndex = 6;
             // 
             // textBoxCode
             // 
@@ -125,7 +126,7 @@
             this.buttonOK.Location = new System.Drawing.Point(806, 8);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(60, 25);
-            this.buttonOK.TabIndex = 3;
+            this.buttonOK.TabIndex = 4;
             this.buttonOK.Text = "确定";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -136,7 +137,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(872, 8);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(60, 25);
-            this.buttonCancel.TabIndex = 4;
+            this.buttonCancel.TabIndex = 5;
             this.buttonCancel.Text = "取消";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -219,6 +220,16 @@
             this.ToolStripMenuItemRemoveAction.Size = new System.Drawing.Size(136, 22);
             this.ToolStripMenuItemRemoveAction.Text = "删除 [动作]";
             // 
+            // buttonCompile
+            // 
+            this.buttonCompile.Location = new System.Drawing.Point(295, 8);
+            this.buttonCompile.Name = "buttonCompile";
+            this.buttonCompile.Size = new System.Drawing.Size(100, 25);
+            this.buttonCompile.TabIndex = 3;
+            this.buttonCompile.Text = "编译设置";
+            this.buttonCompile.UseVisualStyleBackColor = true;
+            this.buttonCompile.Click += new System.EventHandler(this.buttonCompile_Click);
+            // 
             // Configure
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -226,6 +237,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(944, 561);
             this.ControlBox = false;
+            this.Controls.Add(this.buttonCompile);
             this.Controls.Add(this.buttonPen);
             this.Controls.Add(this.buttonGesture);
             this.Controls.Add(this.comboBoxMouse);
@@ -259,8 +271,9 @@
         private System.Windows.Forms.Button buttonGesture;
         private System.Windows.Forms.Button buttonPen;
 
-        private GestureConfigure GestureConfigure;
         private PenConfigure PenConfigure;
+        private GestureConfigure GestureConfigure;
+        private CompileConfigure CompileConfigure;
         private System.Windows.Forms.ContextMenuStrip ContextMenuStripActionPackage;
         private System.Windows.Forms.ContextMenuStrip ContextMenuStripAction;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddActionPackage;
@@ -269,6 +282,7 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemRemoveAction;
         private System.Windows.Forms.Button buttonSpy;
         private System.Windows.Forms.TextBox textBoxCode;
+        private System.Windows.Forms.Button buttonCompile;
     }
 }
 

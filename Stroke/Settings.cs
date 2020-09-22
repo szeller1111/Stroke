@@ -11,6 +11,9 @@ namespace Stroke
         public static Pen Pen;
         public static List<Gesture> Gestures;
         public static List<ActionPackage> ActionPackages;
+        public static List<string> Assemblies;
+        public static List<string> Namespaces;
+
 
         public static void SaveSettings()
         {
@@ -19,6 +22,8 @@ namespace Stroke
             settings.Add("Pen", Pen);
             settings.Add("Gestures", Gestures);
             settings.Add("ActionPackages", ActionPackages);
+            settings.Add("Assemblies", Assemblies);
+            settings.Add("Namespaces", Namespaces);
 
             using (FileStream fileStream = new FileStream("Settings", FileMode.Create))
             {
@@ -38,6 +43,8 @@ namespace Stroke
             Pen = (Pen)settings["Pen"];
             Gestures = (List<Gesture>)settings["Gestures"];
             ActionPackages = (List<ActionPackage>)settings["ActionPackages"];
+            Assemblies = (List<string>)settings["Assemblies"];
+            Namespaces = (List<string>)settings["Namespaces"];
         }
 
     }

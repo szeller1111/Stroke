@@ -31,6 +31,7 @@ namespace Stroke.Configure
 
             PenConfigure = new PenConfigure();
             GestureConfigure = new GestureConfigure();
+            CompileConfigure = new CompileConfigure();
             ContextMenuStripActionPackage = new ContextMenuStrip();
             ContextMenuStripAction = new ContextMenuStrip();
             ToolStripMenuItem ToolStripMenuItemAddActionPackage = new ToolStripMenuItem();
@@ -113,6 +114,13 @@ namespace Stroke.Configure
 
             Settings.ActionPackages = new List<ActionPackage>();
             Settings.ActionPackages.Add(new ActionPackage("Global", ".*"));
+
+            Settings.Assemblies = new List<string>();
+            Settings.Assemblies.Add("System.dll");
+
+            Settings.Namespaces = new List<string>();
+            Settings.Namespaces.Add("System");
+
         }
 
         private void Configure_Load(object sender, EventArgs e)
@@ -213,6 +221,11 @@ namespace Stroke.Configure
             gestures.Add(new DictionaryEntry("#6", "滚轮向下"));
             gestures.AddRange(Settings.Gestures.Select(g => new DictionaryEntry(g.Name, g.Name)).ToArray());
             comboBoxGesture.DataSource = gestures;
+        }
+
+        private void buttonCompile_Click(object sender, EventArgs e)
+        {
+            CompileConfigure.ShowDialog();
         }
 
         private void buttonOK_Click(object sender, EventArgs e)

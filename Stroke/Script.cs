@@ -21,8 +21,7 @@ namespace Stroke
         public static string GenerateSource()
         {
             StringBuilder builder = new StringBuilder();
-            string[] namespaces = { "System", "System.Collections", "System.Collections.Concurrent", "System.Collections.Generic", "System.Collections.ObjectModel", "System.Collections.Specialized", "System.Diagnostics", "System.Drawing", "System.Drawing.Imaging", "System.Drawing.Text", "System.IO", "System.IO.Compression", "System.IO.Pipes", "System.IO.Ports", "System.Linq", "System.Linq.Expressions", "System.Media", "System.Net", "System.Net.Http", "System.Net.Http.Headers", "System.Net.Security", "System.Net.Sockets", "System.Numerics", "System.Reflection", "System.Security", "System.Security.Authentication", "System.Security.Cryptography", "System.Text", "System.Text.RegularExpressions", "System.Threading", "System.Threading.Tasks", "System.Timers", "System.Web", "System.Windows.Forms", "System.Xml", "System.Xml.Linq", "System.Xml.Schema", "System.Xml.Serialization" };
-            foreach (string name in namespaces)
+            foreach (string name in Settings.Namespaces)
             {
                 builder.AppendLine($"using {name};");
             }
@@ -70,8 +69,7 @@ namespace Stroke
             parameter.GenerateInMemory = true;
             parameter.TreatWarningsAsErrors = false;
 
-            string[] assemblies = { "System.dll", "System.Core.dll", "System.Drawing.dll", "System.Net.Http.dll", "System.Web.dll", "System.Windows.Forms.dll", "System.Xml.dll", "System.Xml.Linq.dll" };
-            foreach (string assembly in assemblies)
+            foreach (string assembly in Settings.Assemblies)
             {
                 parameter.ReferencedAssemblies.Add(assembly);
             }
