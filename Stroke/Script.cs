@@ -105,7 +105,7 @@ namespace Stroke
         {
             Task.Run(() =>
             {
-                Program.Stroke.BeginInvoke((EventHandler)delegate
+                Program.Stroke.Invoke((EventHandler)delegate
                 {
                     try
                     {
