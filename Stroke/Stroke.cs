@@ -79,7 +79,6 @@ namespace Stroke
                     CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(args.Location.X, args.Location.Y)), API.GetAncestorFlags.GA_ROOT);
                     stroking = true;
                     this.TopMost = true;
-                    Cursor.Hide();
                     lastPoint = args.Location;
                     drwaingPoints.Add(args.Location);
                     return true;
@@ -94,7 +93,6 @@ namespace Stroke
                     }
 
                     stroking = false;
-                    Cursor.Show();
                     this.Refresh();
                     if (stroked)
                     {
@@ -231,7 +229,6 @@ namespace Stroke
                                 {
                                     stroked = false;
                                     drwaingPoints.Clear();
-                                    Cursor.Show();
                                     this.Refresh();
                                     Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
                                     abolish = true;
