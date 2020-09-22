@@ -3,8 +3,10 @@ using System.Windows.Forms;
 
 namespace Stroke
 {
-    static class Programl
+    static class Program
     {
+        public static Stroke Stroke;
+
         [STAThread]
         static void Main()
         {
@@ -25,10 +27,10 @@ namespace Stroke
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Stroke stroke = new Stroke();
+            Stroke = new Stroke();
             MouseHook.StartHook();
             Script.CompileScript();
-            Application.Run(stroke);
+            Application.Run(Stroke);
             MouseHook.StopHook();
         }
     }
