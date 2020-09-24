@@ -45,17 +45,17 @@ namespace Stroke.Configure
                 float MinX = points.Min(p => p.X), MinY = points.Min(p => p.Y), MaxX = points.Max(p => p.X), MaxY = points.Max(p => p.Y);
                 float width = MaxX - MinX, height = MaxY - MinY;
                 float virtualLength = (width > height ? width : height);
-                int actualLength = 300;
+                int actualLength = 256;
                 float scale = actualLength / virtualLength;
                 int thickness = 6;
 
                 for (int i = 0; i < 128; i++)
                 {
-                    points[i].X = (points[i].X - MinX + (virtualLength - width) / 2) * scale + thickness * 14;
-                    points[i].Y = (points[i].Y - MinY + (virtualLength - height) / 2) * scale + thickness * 14;
+                    points[i].X = (points[i].X - MinX + (virtualLength - width) / 2) * scale + thickness * 16;
+                    points[i].Y = (points[i].Y - MinY + (virtualLength - height) / 2) * scale + thickness * 16;
                 }
 
-                Bitmap bitmap = new Bitmap(actualLength + thickness * 28 + 1, actualLength + thickness * 28 + 1);
+                Bitmap bitmap = new Bitmap(actualLength + thickness * 32 + 1, actualLength + thickness * 32 + 1);
                 Graphics graphics = Graphics.FromImage(bitmap);
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
