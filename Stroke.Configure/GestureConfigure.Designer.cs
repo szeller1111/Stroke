@@ -58,7 +58,7 @@
             this.pictureBoxGesture.Size = new System.Drawing.Size(480, 480);
             this.pictureBoxGesture.TabIndex = 4;
             this.pictureBoxGesture.TabStop = false;
-            this.pictureBoxGesture.Click += new System.EventHandler(this.pictureBoxGesture_Click);
+            this.pictureBoxGesture.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxGesture_MouseClick);
             // 
             // textBoxName
             // 

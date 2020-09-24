@@ -28,6 +28,8 @@ namespace Stroke.Configure
             ContextMenuStripGesture.Items.Add(ToolStripMenuItemRemoveGesture);
             ToolStripMenuItemAddGesture.Click += ToolStripMenuItemAddGesture_Click;
             ToolStripMenuItemRemoveGesture.Click += ToolStripMenuItemRemoveGesture_Click;
+
+            listViewGesture.Items[0].Selected = true;
         }
 
         private void DrawGesture()
@@ -37,17 +39,23 @@ namespace Stroke.Configure
                 PointF[] points = new PointF[128];
                 for (int i = 1; i < 128; i++)
                 {
-                    points[i].X += points[i - 1].X + Settings.Gestures[index].Vectors[i].X / 40f;
-                    points[i].Y += points[i - 1].Y + Settings.Gestures[index].Vectors[i].Y / 40f;
+                    points[i].X += points[i - 1].X + Settings.Gestures[index].Vectors[i].X / 127f;
+                    points[i].Y += points[i - 1].Y + Settings.Gestures[index].Vectors[i].Y / 127f;
                 }
                 float MinX = points.Min(p => p.X), MinY = points.Min(p => p.Y), MaxX = points.Max(p => p.X), MaxY = points.Max(p => p.Y);
+                float width = MaxX - MinX, height = MaxY - MinY;
+                float virtualLength = (width > height ? width : height);
+                int actualLength = 300;
+                float scale = actualLength / virtualLength;
                 int thickness = 6;
+
                 for (int i = 0; i < 128; i++)
                 {
-                    points[i].X = points[i].X + thickness * 3 - MinX;
-                    points[i].Y = points[i].Y + thickness * 3 - MinY;
+                    points[i].X = (points[i].X - MinX + (virtualLength - width) / 2) * scale + thickness * 14;
+                    points[i].Y = (points[i].Y - MinY + (virtualLength - height) / 2) * scale + thickness * 14;
                 }
-                Bitmap bitmap = new Bitmap((int)(MaxX - MinX) + thickness * 6 + 1, (int)(MaxY - MinY) + thickness * 6 + 1);
+
+                Bitmap bitmap = new Bitmap(actualLength + thickness * 28 + 1, actualLength + thickness * 28 + 1);
                 Graphics graphics = Graphics.FromImage(bitmap);
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
@@ -95,13 +103,21 @@ namespace Stroke.Configure
 
         }
 
-        private void pictureBoxGesture_Click(object sender, EventArgs e)
+        private void pictureBoxGesture_MouseClick(object sender, MouseEventArgs e)
         {
             if (index != -1)
             {
-                GestureCanvas GestureCanvas = new GestureCanvas(Settings.Gestures[index]);
-                GestureCanvas.ShowDialog();
-                DrawGesture();
+                if (e.Button == MouseButtons.Middle)
+                {
+                    Settings.Gestures[index].Vectors = null;
+                    DrawGesture();
+                }
+                else
+                {
+                    GestureCanvas GestureCanvas = new GestureCanvas(Settings.Gestures[index]);
+                    GestureCanvas.ShowDialog();
+                    DrawGesture();
+                }
             }
         }
 
@@ -130,11 +146,19 @@ namespace Stroke.Configure
             {
                 listViewGesture.Items[index].Selected = true;
             }
-            if (listViewGesture.Items.Count == 0)
+            else
             {
-                index = -1;
-                ToolStripMenuItemAddGesture_Click(null, new EventArgs());
+                if (listViewGesture.Items.Count == 0)
+                {
+                    index = -1;
+                    ToolStripMenuItemAddGesture_Click(null, new EventArgs());
+                }
+                else
+                {
+                    listViewGesture.Items[listViewGesture.Items.Count - 1].Selected = true;
+                }
             }
+
 
         }
     }

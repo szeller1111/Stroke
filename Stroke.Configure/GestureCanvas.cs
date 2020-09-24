@@ -60,14 +60,16 @@ namespace Stroke.Configure
                         else
                         {
                             Gesture gesture = new Gesture("", drwaingPoints);
-                            for (int i = 0; i < 128; i++)
+                            if (gesture.Vectors != null)
                             {
-                                double x = (Gesture.Vectors[i].X * 0.9 + gesture.Vectors[i].X * 0.1);
-                                double y = (Gesture.Vectors[i].Y * 0.9 + gesture.Vectors[i].Y * 0.1);
-
-                                double distance = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-                                Gesture.Vectors[i].X = (sbyte)(x * 127 / distance);
-                                Gesture.Vectors[i].Y = (sbyte)(y * 127 / distance);
+                                for (int i = 0; i < 128; i++)
+                                {
+                                    double x = (Gesture.Vectors[i].X * 0.9 + gesture.Vectors[i].X * 0.1);
+                                    double y = (Gesture.Vectors[i].Y * 0.9 + gesture.Vectors[i].Y * 0.1);
+                                    double distance = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                                    Gesture.Vectors[i].X = (sbyte)(x * 127 / distance);
+                                    Gesture.Vectors[i].Y = (sbyte)(y * 127 / distance);
+                                }
                             }
                         }
                         stroked = false;

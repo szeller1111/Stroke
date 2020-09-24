@@ -76,7 +76,6 @@ namespace Stroke.Configure
                 }
                 catch (Exception exception)
                 {
-
                     MessageBox.Show(exception.Message);
                 }
             }
