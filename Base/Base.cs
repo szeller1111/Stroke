@@ -533,6 +533,20 @@ namespace Stroke
                             break;
                     }
                 }
+                else if (keys[i] == '#')
+                {
+                    i++;
+                    try
+                    {
+                        int keyCode = int.Parse(keys.Substring(i, 2), System.Globalization.NumberStyles.HexNumber);
+                        KeyDown((Keys)keyCode);
+                        KeyUp((Keys)keyCode);
+                    }
+                    finally
+                    {
+                        i++;
+                    }
+                }
                 else
                 {
                     switch (keys[i])

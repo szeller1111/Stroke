@@ -263,7 +263,7 @@ namespace Stroke.Configure
         {
             if (CurrentAction != null)
             {
-                CurrentAction.Code = textBoxCode.Text.Replace("\t", "    ");
+                CurrentAction.Code = Regex.Replace(textBoxCode.Text, "(?<=^\t*)\t", "    ");
             }
             else if (CurrentActionPackage != null)
             {
