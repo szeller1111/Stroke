@@ -43,7 +43,7 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 
 - Base.IsKeyDown(Keys key)：某个键是否按下。
 
-- Base.IsKeyToggled(Keys key)：某键是否开启（例如：CapsLock）。
+- Base.IsKeyToggled(Keys key)：某个键是否开启（例如：CapsLock）。
 
 - Base.WindowState：它是关于窗口状态的枚举类型，有以下四种：
   - Normal：正常。
@@ -56,6 +56,12 @@ Stroke 是一款鼠标手势程序。它允许你通过划动鼠标来执行特�
 - Base.GetWindowState()：获取当前窗体的状态，返回类型为 Base.WindowState。
 
 - Base.Run(string fileName, string arguments = "", string workingDirectory = "")：启动指定的应用程序或文件。
+
+- Base.IsTopmost()：当前操作的窗体是否置顶。
+
+- Base.TopmostOn()：置顶当前操作的窗体。
+
+- Base.TopmostOff()：取消置顶当前操作的窗体。
 
 - Base.KeyboardHook：键盘钩子工具类，它能够获取用户当前的键盘状态，成员如下：
   - KeyStates：它是关于按键状态的枚举类型，有以下三种：
