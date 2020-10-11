@@ -62,7 +62,7 @@ namespace Stroke
 
         private void Stroke_Shown(object sender, EventArgs e)
         {
-            API.SetWindowLong(this.Handle, API.WindowLong.GWL_EXSTYLE, API.GetWindowLong(this.Handle, API.WindowLong.GWL_EXSTYLE) | (uint)(API.WindowStylesExtended.WS_EX_TRANSPARENT | API.WindowStylesExtended.WS_EX_LAYERED | API.WindowStylesExtended.WS_EX_NOACTIVATE | API.WindowStylesExtended.WS_EX_TOPMOST));
+            API.SetWindowLong(this.Handle, API.WindowLong.GWL_EXSTYLE, API.GetWindowLong(this.Handle, API.WindowLong.GWL_EXSTYLE) | (uint)(API.WindowStylesExtended.WS_EX_TRANSPARENT | API.WindowStylesExtended.WS_EX_LAYERED | API.WindowStylesExtended.WS_EX_NOACTIVATE));
         }
 
         private void Stroke_FormClosing(object sender, FormClosingEventArgs e)
@@ -85,14 +85,15 @@ namespace Stroke
                 }
                 else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up)
                 {
+                    stroking = false;
+                    this.TopMost = false;
+
                     if (abolish)
                     {
-                        stroking = false;
                         abolish = false;
                         return true;
                     }
 
-                    stroking = false;
                     this.Refresh();
                     if (stroked)
                     {
