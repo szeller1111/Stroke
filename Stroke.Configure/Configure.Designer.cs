@@ -113,6 +113,7 @@
             // 
             this.treeViewAction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.treeViewAction.HideSelection = false;
             this.treeViewAction.Location = new System.Drawing.Point(3, 3);
             this.treeViewAction.Name = "treeViewAction";
             this.treeViewAction.Size = new System.Drawing.Size(221, 504);
