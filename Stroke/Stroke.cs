@@ -15,12 +15,14 @@ namespace Stroke
         private Draw draw;
         private bool stroking = false;
         private bool stroked = false;
+        private bool wheeled = false;
         private bool abolish = false;
         private Point lastPoint = new Point(0, 0);
         private List<Point> drwaingPoints = new List<Point>();
         private readonly int threshold = 80;
         private int modifier = 0;
         public static IntPtr CurrentWindow;
+        public static Point KeyPoint;
 
         private void InitializeComponent()
         {
@@ -77,7 +79,8 @@ namespace Stroke
             {
                 if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
-                    CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(args.Location.X, args.Location.Y)), API.GetAncestorFlags.GA_ROOT);
+                    KeyPoint = args.Location;
+                    CurrentWindow = API.GetAncestor(API.WindowFromPoint(new API.POINT(KeyPoint.X, KeyPoint.Y)), API.GetAncestorFlags.GA_ROOT);
                     stroking = true;
                     this.TopMost = true;
                     lastPoint = args.Location;
@@ -172,6 +175,7 @@ namespace Stroke
 
                 if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
+                    wheeled = false;
                     switch (args.MouseButton)
                     {
                         case MouseButtons.Left:
@@ -192,7 +196,7 @@ namespace Stroke
                     }
                     return true;
                 }
-                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked && !wheeled)
                 {
                     switch (args.MouseButton)
                     {
@@ -215,6 +219,7 @@ namespace Stroke
                 }
                 else if (args.MouseButtonState == MouseHook.MouseButtonStates.Wheel)
                 {
+                    wheeled = true;
                     if (args.WheelDelta > 0)
                     {
                         gesture = gesture + (int)(SpecialGesture.WheelUp);
@@ -266,10 +271,14 @@ namespace Stroke
 
             if (args.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking && !abolish)
             {
-                if (drwaingPoints.Count > 15)
+                if (!stroked)
                 {
-                    stroked = true;
+                    if (Math.Pow(lastPoint.X - KeyPoint.X, 2) + Math.Pow(lastPoint.Y - KeyPoint.Y, 2) > 512)
+                    {
+                        stroked = true;
+                    }
                 }
+
                 if (Settings.Pen.Opacity != 0 && Settings.Pen.Thickness != 0)
                 {
                     draw.DrawPath(lastPoint, args.Location);

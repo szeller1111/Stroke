@@ -567,6 +567,8 @@ namespace Stroke
 
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
 
+        public static Point KeyPoint { get => Stroke.KeyPoint; }
+
         public static Color PenColor { get => Settings.Pen.Color; set => Settings.Pen.Color = value; }
         public static double PenOpacity { get => Settings.Pen.Opacity; set => Settings.Pen.Opacity = value; }
         public static byte PenThickness { get => Settings.Pen.Thickness; set => Settings.Pen.Thickness = value; }
