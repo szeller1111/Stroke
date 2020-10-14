@@ -19,6 +19,7 @@ namespace Stroke
         private Point lastPoint = new Point(0, 0);
         private List<Point> drwaingPoints = new List<Point>();
         private readonly int threshold = 80;
+        private int modifier = 0;
         public static IntPtr CurrentWindow;
 
         private void InitializeComponent()
@@ -90,6 +91,7 @@ namespace Stroke
 
                     if (abolish)
                     {
+                        modifier = 0;
                         abolish = false;
                         return true;
                     }
@@ -140,8 +142,9 @@ namespace Stroke
                                     {
                                         if (action.Gesture == Settings.Gestures[index].Name)
                                         {
-                                            Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
+                                            Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", modifier);
                                             stroked = false;
+                                            modifier = 0;
                                             drwaingPoints.Clear();
                                             return true;
                                         }
@@ -157,6 +160,7 @@ namespace Stroke
                         ClickStrokeButton();
                     }
 
+                    modifier = 0;
                     drwaingPoints.Clear();
                     return true;
                 }
@@ -167,9 +171,27 @@ namespace Stroke
 
                 if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
+                    switch (args.MouseButton)
+                    {
+                        case MouseButtons.Left:
+                            modifier |= 0x00000001;
+                            break;
+                        case MouseButtons.Right:
+                            modifier |= 0x00000002;
+                            break;
+                        case MouseButtons.XButton1:
+                            modifier |= 0x00000004;
+                            break;
+                        case MouseButtons.XButton2:
+                            modifier |= 0x00000008;
+                            break;
+                        case MouseButtons.Middle:
+                            modifier |= 0x00000010;
+                            break;
+                    }
                     return true;
                 }
-                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked)
                 {
                     switch (args.MouseButton)
                     {
@@ -231,20 +253,20 @@ namespace Stroke
                                     stroked = false;
                                     drwaingPoints.Clear();
                                     this.Refresh();
-                                    Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}");
+                                    Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", modifier);
                                     abolish = true;
                                     return true;
                                 }
                             }
                         }
                     }
-
+                    return true;
                 }
             }
 
             if (args.MouseButtonState == MouseHook.MouseButtonStates.Move && stroking && !abolish)
             {
-                if (drwaingPoints.Count > 5)
+                if (drwaingPoints.Count > 15)
                 {
                     stroked = true;
                 }

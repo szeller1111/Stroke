@@ -46,7 +46,7 @@ namespace Stroke
 
                     Functions.Add($"{package.Name}.{action.Name}", "Function_" + index++);
                     builder.AppendLine(Indent(2) + $" // {package.Name}.{action.Name}");
-                    builder.AppendLine(Indent(2) + $"static public void {Functions[$"{package.Name}.{action.Name}"]}()");
+                    builder.AppendLine(Indent(2) + $"static public void {Functions[$"{package.Name}.{action.Name}"]}(int _)");
                     builder.AppendLine(Indent(2) + "{");
                     foreach (string line in action.Code.Replace("\r", "").Split('\n'))
                     {
@@ -101,7 +101,7 @@ namespace Stroke
             Scripts = results.CompiledAssembly.GetType("Stroke.Scripts");
         }
 
-        public static void RunScript(string name)
+        public static void RunScript(string name, int modifier)
         {
             Task.Run(() =>
             {
@@ -109,7 +109,7 @@ namespace Stroke
                 {
                     try
                     {
-                        Scripts.GetMethod(Functions[name]).Invoke(Instance, null);
+                        Scripts.GetMethod(Functions[name]).Invoke(Instance, new object[] { modifier });
                     }
                     catch (Exception exception)
                     {
