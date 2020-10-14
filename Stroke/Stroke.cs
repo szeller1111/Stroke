@@ -176,6 +176,8 @@ namespace Stroke
                 if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
                     wheeled = false;
+                    abolish = false;
+                    lastPoint = args.Location;
                     switch (args.MouseButton)
                     {
                         case MouseButtons.Left:
@@ -196,7 +198,7 @@ namespace Stroke
                     }
                     return true;
                 }
-                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked && !wheeled)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked && !wheeled && !abolish)
                 {
                     switch (args.MouseButton)
                     {
@@ -256,10 +258,10 @@ namespace Stroke
                             {
                                 if (action.Gesture == gesture)
                                 {
+                                    abolish = true;
                                     drwaingPoints.Clear();
                                     this.Refresh();
                                     Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", modifier);
-                                    abolish = true;
                                     return true;
                                 }
                             }
