@@ -91,6 +91,7 @@ namespace Stroke
 
                     if (abolish)
                     {
+                        stroked = false;
                         modifier = 0;
                         abolish = false;
                         return true;
@@ -250,7 +251,6 @@ namespace Stroke
                             {
                                 if (action.Gesture == gesture)
                                 {
-                                    stroked = false;
                                     drwaingPoints.Clear();
                                     this.Refresh();
                                     Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", modifier);
