@@ -101,7 +101,7 @@ namespace Stroke
             Scripts = results.CompiledAssembly.GetType("Stroke.Scripts");
         }
 
-        public static void RunScript(string name, int modifier)
+        public static void RunScript(string name, int mark)
         {
             Task.Run(() =>
             {
@@ -109,7 +109,7 @@ namespace Stroke
                 {
                     try
                     {
-                        Scripts.GetMethod(Functions[name]).Invoke(Instance, new object[] { modifier });
+                        Scripts.GetMethod(Functions[name]).Invoke(Instance, new object[] { mark });
                     }
                     catch (Exception exception)
                     {

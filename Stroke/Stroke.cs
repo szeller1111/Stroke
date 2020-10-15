@@ -15,12 +15,12 @@ namespace Stroke
         private Draw draw;
         private bool stroking = false;
         private bool stroked = false;
-        private bool wheeled = false;
+        private bool special = false;
         private bool abolish = false;
         private Point lastPoint = new Point(0, 0);
         private List<Point> drwaingPoints = new List<Point>();
         private readonly int threshold = 80;
-        private int modifier = 0;
+        private int mark = 0;
         public static IntPtr CurrentWindow;
         public static Point KeyPoint;
 
@@ -94,8 +94,8 @@ namespace Stroke
 
                     if (abolish)
                     {
+                        mark = 0;
                         stroked = false;
-                        modifier = 0;
                         abolish = false;
                         return true;
                     }
@@ -146,9 +146,9 @@ namespace Stroke
                                     {
                                         if (action.Gesture == Settings.Gestures[index].Name)
                                         {
-                                            Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", modifier);
+                                            Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", mark);
+                                            mark = 0;
                                             stroked = false;
-                                            modifier = 0;
                                             drwaingPoints.Clear();
                                             return true;
                                         }
@@ -156,15 +156,14 @@ namespace Stroke
                                 }
                             }
                         }
-
-                        stroked = false;
                     }
                     else
                     {
                         ClickStrokeButton();
                     }
 
-                    modifier = 0;
+                    mark = 0;
+                    stroked = false;
                     drwaingPoints.Clear();
                     return true;
                 }
@@ -175,31 +174,32 @@ namespace Stroke
 
                 if (args.MouseButtonState == MouseHook.MouseButtonStates.Down)
                 {
-                    wheeled = false;
-                    abolish = false;
-                    lastPoint = args.Location;
+                    special = false;
+
                     switch (args.MouseButton)
                     {
                         case MouseButtons.Left:
-                            modifier |= 0x00000001;
+                            mark |= 0x00000001;
                             break;
                         case MouseButtons.Right:
-                            modifier |= 0x00000002;
+                            mark |= 0x00000002;
                             break;
                         case MouseButtons.XButton1:
-                            modifier |= 0x00000004;
+                            mark |= 0x00000004;
                             break;
                         case MouseButtons.XButton2:
-                            modifier |= 0x00000008;
+                            mark |= 0x00000008;
                             break;
                         case MouseButtons.Middle:
-                            modifier |= 0x00000010;
+                            mark |= 0x00000010;
                             break;
                     }
                     return true;
                 }
-                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked && !wheeled && !abolish)
+                else if (args.MouseButtonState == MouseHook.MouseButtonStates.Up && !stroked && !special)
                 {
+                    special = true;
+
                     switch (args.MouseButton)
                     {
                         case MouseButtons.Middle:
@@ -221,7 +221,8 @@ namespace Stroke
                 }
                 else if (args.MouseButtonState == MouseHook.MouseButtonStates.Wheel)
                 {
-                    wheeled = true;
+                    special = true;
+
                     if (args.WheelDelta > 0)
                     {
                         gesture = gesture + (int)(SpecialGesture.WheelUp);
@@ -259,9 +260,9 @@ namespace Stroke
                                 if (action.Gesture == gesture)
                                 {
                                     abolish = true;
-                                    drwaingPoints.Clear();
                                     this.Refresh();
-                                    Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", modifier);
+                                    drwaingPoints.Clear();
+                                    Script.RunScript($"{Settings.ActionPackages[i].Name}.{action.Name}", mark);
                                     return true;
                                 }
                             }
